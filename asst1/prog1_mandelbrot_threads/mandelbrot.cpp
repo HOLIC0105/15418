@@ -120,22 +120,75 @@ typedef struct {
 
 #define Min(x, y) (x > y ? y : x)
 
+/*
+
+//
+// Problem 1: Parallel Fractal Generation Using Pthreads
+// Problem 1/2/3  
+//
+
+void* workerThreadStart(void* threadArgs) {
+
+    double startTime = CycleTimer::currentSeconds();
+
+    WorkerArgs* args = static_cast<WorkerArgs*>(threadArgs);
+    int blockSize =  static_cast<int>(args->height) / args->numThreads;
+    int remainder = static_cast<int>(args->height) - blockSize * args->numThreads;
+    int startRow = args->threadId * blockSize + Min(args->threadId, remainder);
+    int endRow = startRow + blockSize + (args->threadId < remainder);
+
+    mandelbrotSerial(args->x0, args->y0, args->x1, args->y1, static_cast<int>(args->width), 
+                     static_cast<int>(args->height), startRow, endRow, args->maxIterations, args->output);
+
+    double endTime = CycleTimer::currentSeconds();
+
+    printf("[mandelbrot thread]:\t\t[threadId %d]\t\t[%.3f] ms\n", args->threadId, (endTime - startTime) * 1000);
+
+    return NULL;
+}
+
+*/
+
+
+void mandelbrotSerial_ng(
+    float x0, float y0, float x1, float y1,
+    int width, int height,
+    int startRow, int endRow,
+    int maxIterations,
+    int step,
+    int output[])
+{
+    float dx = (x1 - x0) / width;
+    float dy = (y1 - y0) / height;
+
+    for (int j = startRow; j < endRow; j += step) {
+        for (int i = 0; i < width; ++i) {
+            float x = x0 + i * dx;
+            float y = y0 + j * dy;
+
+            int index = (j * width + i);
+            output[index] = mandel(x, y, maxIterations);
+        }
+    }
+}
+
+
+//
+//more Load Balance method
+//
+
 void* workerThreadStart(void* threadArgs) {
 
     WorkerArgs* args = static_cast<WorkerArgs*>(threadArgs);
 
-    int blockSize =  static_cast<int>(args->height) / args->numThreads;
-    
-    int remainder = static_cast<int>(args->height) - blockSize * args->numThreads;
-
-    int startRow = args->threadId * blockSize + Min(args->threadId, remainder);
-
-    int endRow = startRow + blockSize + (args->threadId < remainder);
-
-    mandelbrotSerial(args->x0, args->y0, args->x1, args->y1, static_cast<int>(args->width), static_cast<int>(args->height), startRow, endRow, args->maxIterations,args->output);
+    mandelbrotSerial_ng(args->x0, args->y0, args->x1, args->y1, static_cast<int>(args->width), 
+                     static_cast<int>(args->height), args->threadId, static_cast<int>(args->height), 
+                     args->maxIterations, args->numThreads, args->output);
 
     return NULL;
 }
+
+
 
 //
 // MandelbrotThread --
