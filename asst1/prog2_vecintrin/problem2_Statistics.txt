@@ -26,3 +26,10 @@ Total Vector Instructions: 30002
 Vector Utilization:        88.100585%
 Utilized Vector Lanes:     422911
 Total Vector Lanes:        480032
+
+****************** Printing Vector Unit Statistics *******************
+Vector Width:              32
+Total Vector Instructions: 15026
+Vector Utilization:        87.997263%
+Utilized Vector Lanes:     423119
+Total Vector Lanes:        480832
