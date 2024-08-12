@@ -1,0 +1,28 @@
+
+****************** Printing Vector Unit Statistics *******************
+Vector Width:              2
+Total Vector Instructions: 96134
+Vector Utilization:        90.014979%
+Utilized Vector Lanes:     173070
+Total Vector Lanes:        192268
+
+****************** Printing Vector Unit Statistics *******************
+Vector Width:              4
+Total Vector Instructions: 89838
+Vector Utilization:        88.597531%
+Utilized Vector Lanes:     318377
+Total Vector Lanes:        359352
+
+****************** Printing Vector Unit Statistics *******************
+Vector Width:              8
+Total Vector Instructions: 58750
+Vector Utilization:        88.124681%
+Utilized Vector Lanes:     414186
+Total Vector Lanes:        470000
+
+****************** Printing Vector Unit Statistics *******************
+Vector Width:              16
+Total Vector Instructions: 30002
+Vector Utilization:        88.100585%
+Utilized Vector Lanes:     422911
+Total Vector Lanes:        480032
