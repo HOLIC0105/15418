@@ -1,35 +1,73 @@
-
+CLAMPED EXPONENT (required) 
+Results matched with answer!
 ****************** Printing Vector Unit Statistics *******************
 Vector Width:              2
-Total Vector Instructions: 96134
-Vector Utilization:        90.014979%
-Utilized Vector Lanes:     173070
-Total Vector Lanes:        192268
+Total Vector Instructions: 281613
+Vector Utilization:        90.454098%
+Utilized Vector Lanes:     509461
+Total Vector Lanes:        563226
+************************ Result Verification *************************
+Passed!!!
 
+ARRAY SUM (bonus) 
+Passed!!!
+
+
+CLAMPED EXPONENT (required) 
+Results matched with answer!
 ****************** Printing Vector Unit Statistics *******************
 Vector Width:              4
-Total Vector Instructions: 89838
-Vector Utilization:        88.597531%
-Utilized Vector Lanes:     318377
-Total Vector Lanes:        359352
+Total Vector Instructions: 144198
+Vector Utilization:        90.208429%
+Utilized Vector Lanes:     520315
+Total Vector Lanes:        576792
+************************ Result Verification *************************
+Passed!!!
 
+ARRAY SUM (bonus) 
+Passed!!!
+
+
+CLAMPED EXPONENT (required) 
+Results matched with answer!
 ****************** Printing Vector Unit Statistics *******************
 Vector Width:              8
-Total Vector Instructions: 58750
-Vector Utilization:        88.124681%
-Utilized Vector Lanes:     414186
-Total Vector Lanes:        470000
+Total Vector Instructions: 72488
+Vector Utilization:        90.154060%
+Utilized Vector Lanes:     522807
+Total Vector Lanes:        579904
+************************ Result Verification *************************
+Passed!!!
 
+ARRAY SUM (bonus) 
+Passed!!!
+
+
+CLAMPED EXPONENT (required) 
+Results matched with answer!
 ****************** Printing Vector Unit Statistics *******************
 Vector Width:              16
-Total Vector Instructions: 30002
-Vector Utilization:        88.100585%
-Utilized Vector Lanes:     422911
-Total Vector Lanes:        480032
+Total Vector Instructions: 36253
+Vector Utilization:        90.152367%
+Utilized Vector Lanes:     522927
+Total Vector Lanes:        580048
+************************ Result Verification *************************
+Passed!!!
 
+ARRAY SUM (bonus) 
+Passed!!!
+
+
+CLAMPED EXPONENT (required) 
+Results matched with answer!
 ****************** Printing Vector Unit Statistics *******************
 Vector Width:              32
-Total Vector Instructions: 15026
-Vector Utilization:        87.997263%
-Utilized Vector Lanes:     423119
-Total Vector Lanes:        480832
+Total Vector Instructions: 18157
+Vector Utilization:        90.039482%
+Utilized Vector Lanes:     523151
+Total Vector Lanes:        581024
+************************ Result Verification *************************
+Passed!!!
+
+ARRAY SUM (bonus) 
+Must have N % VECTOR_WIDTH == 0 for this problem (VECTOR_WIDTH is 32)

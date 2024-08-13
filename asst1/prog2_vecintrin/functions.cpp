@@ -88,48 +88,51 @@ void clampedExpVector(float* values, int* exponents, float* output, int N) {
 	__cmu418_vec_float maxResultVector;
 	__cmu418_vec_int exponentsVector;
 	__cmu418_vec_int oneAll;
+	__cmu418_vec_int zeroAll;
 	__cmu418_vec_int exponentsFlag;
 	__cmu418_mask maskResult;
 	__cmu418_mask maskExponents;
+	__cmu418_mask maskZero;
 	__cmu418_mask maskAll = _cmu418_init_ones();
 
 	_cmu418_vset_int(oneAll, 1, maskAll);
+	_cmu418_vset_int(zeroAll, 0, maskAll);
 	_cmu418_vset_float(maxResultVector, 4.18f, maskAll);
 
 	for(int i = 0; i < N; i += VECTOR_WIDTH) {
 
-		if (i + VECTOR_WIDTH >= N) {
-			maskAll = _cmu418_init_ones(N - i);
-			maskResult = maskExponents = maskAll;
-		} else {
-			maskAll = _cmu418_init_ones();
+		if (i + VECTOR_WIDTH > N) {
+			maskZero = maskResult = maskExponents = maskAll = _cmu418_init_ones(N - i);
 		}
-
 
 		_cmu418_vset_float(resultVector, 1, maskAll);  //result = 1;
 		
 		_cmu418_vload_float(valuesVector, values + i, maskAll);
 		_cmu418_vload_int(exponentsVector, exponents + i, maskAll);
-		
-		_cmu418_vbitand_int(exponentsFlag, exponentsVector, oneAll, maskAll);
-		_cmu418_veq_int(maskExponents, exponentsFlag, oneAll, maskAll);
-		
-		while(_cmu418_cntbits(maskExponents)) {
+
+		auto check = [&exponentsVector, &maskZero, &zeroAll, &maskAll] {
+			_cmu418_vgt_int(maskZero, exponentsVector, zeroAll, maskAll);
+			return (_cmu418_cntbits(maskZero) > 0);
+		};
+
+		while(check()) {	
+
+			_cmu418_vbitand_int(exponentsFlag, exponentsVector, oneAll, maskAll); 
+			_cmu418_veq_int(maskExponents, exponentsFlag, oneAll, maskAll);
+
 			_cmu418_vmult_float(resultVector, resultVector, valuesVector, maskExponents); // if(y & 1) result *= xpower
 			
 			_cmu418_vmult_float(valuesVector, valuesVector, valuesVector, maskAll); //xpower = xpower * xpower;
  
 			_cmu418_vshiftright_int(exponentsVector, exponentsVector, oneAll, maskAll); //y >>= 1
-
-			_cmu418_vbitand_int(exponentsFlag, exponentsVector, oneAll, maskAll); 
-			_cmu418_veq_int(maskExponents, exponentsFlag, oneAll, maskAll);
+			
 		}
 
 		_cmu418_vgt_float(maskResult, resultVector, maxResultVector, maskAll); //if (result > 4.18f)
 
 		_cmu418_vset_float(resultVector, 4.18f, maskResult);  //result = 4.18f
 
-		_cmu418_vstore_float(output, resultVector, maskAll);
+		_cmu418_vstore_float(output + i, resultVector, maskAll);
 
 	}
 }
@@ -149,5 +152,21 @@ float arraySumSerial(float* values, int N) {
 float arraySumVector(float* values, int N) {
     // Implement your vectorized version here
     //  ...
-	return 0.f;
+
+	__cmu418_vec_float valuesVector;
+	__cmu418_vec_float resultVector;
+	__cmu418_mask maskAll = _cmu418_init_ones();
+
+	_cmu418_vset_float(resultVector, 0, maskAll);
+
+	for(int i = 0; i < N; i += VECTOR_WIDTH) {
+		_cmu418_vload_float(valuesVector, values + i, maskAll);
+		_cmu418_vadd_float(resultVector, resultVector, valuesVector, maskAll);
+	}
+
+	for(int i = 1; i < VECTOR_WIDTH; i <<= 1) {
+		_cmu418_interleave_float(resultVector, resultVector);
+		_cmu418_hadd_float(resultVector, resultVector);
+	}
+	return resultVector.value[0];
 }
